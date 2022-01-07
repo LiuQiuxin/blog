@@ -1,0 +1,13 @@
+{{extend "./common/layout.art"}}
+{{block  "main"}}
+    <p class="bg-danger error">{{msg}}</p>
+{{/block}}
+
+//设置发生错误后3秒钟跳转到登录页面
+{{block "script"}}
+    <script type="text/javascript">
+        setTimeout(function(){
+            location.href = "/admin/login";
+        },3000);
+    </script>
+{{/block}}

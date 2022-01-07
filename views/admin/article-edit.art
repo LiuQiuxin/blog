@@ -1,0 +1,88 @@
+{{extend  "./common/layout.art"}}
+
+{{block "main"}}
+    <!-- 头部 -->
+     <!--引入公共的子模版文件-->
+    {{include "./common/header.art"}}
+    <!-- /头部 -->
+    <!-- 主体内容 -->
+    <div class="content">
+        <!-- 侧边栏 -->
+         {{include "./common/aside.art"}}
+        <!-- 侧边栏 -->
+        <div class="main">
+            <!-- 分类标题 -->
+            <div class="title">
+                <h4>5b9a716cb2d2bf17706bcc0a</h4>
+            </div>
+            <!-- /分类标题 -->
+            <form class="form-container" action="/admin/article-add" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>标题</label>
+                    <input type="text" class="form-control" name="title" placeholder="请输入文章标题">
+                </div>
+                <div class="form-group">
+                    <label>作者</label>
+                    <input type="text" class="form-control" name="author" readonly value="{{@userInfo._id}}">
+                </div>
+                <div class="form-group">
+                    <label>发布时间</label>
+                    <input type="date" name="publishDate" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                   <label for="exampleInputFile">文章封面</label>
+                   <input type="file" name="cover" id="file" multiple>
+                   <div class="thumbnail-waper">
+                       <img class="img-thumbnail" src="" id="preview">
+                   </div>
+                </div>
+                <div class="form-group">
+                    <label>内容</label>
+                    <textarea class="form-control" id="editor" name="content"></textarea>
+                </div>
+                <div class="buttons">
+                    <input type="submit" class="btn btn-primary">
+                </div>
+            </form>
+            
+        </div>
+    </div>
+    <!-- /主体内容 -->
+{{/block}}
+{{block "script"}}
+    <script src="/admin/lib/ckeditor5/ckeditor.js"></script>
+    <script type="text/javascript">
+        let editor;
+        ClassicEditor
+                .create( document.querySelector('#editor'))
+                .then(newEditor => {
+                    editor = newEditor;
+                })
+                .catch( error => {
+                    console.error( error );
+                });
+
+        // 获取数据
+        // const editorData = editor.getData();
+
+        var file = document.getElementById("file");
+        var preview = document.getElementById("preview");
+        console.log(preview);
+
+        //当用户选择完文件以后，创建文件读取执行回调函数
+        file.onchange = function(){
+            //1、创建文件读取对象
+            var reader = new FileReader();
+            //读取文件,this.file表示用户选择的文件列表
+            reader.readAsDataURL(this.files[0]);
+            //监听onlaod事件，在文件读取完毕后获取文件读取结果
+            reader.onload = function(){
+                //将文件读取的结果显示到页面中保存
+                preview.src = reader.result;
+            }
+        }
+    </script>
+
+
+{{/block}}
